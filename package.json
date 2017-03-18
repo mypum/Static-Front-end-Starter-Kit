@@ -24,10 +24,13 @@
     "gulp-sass": "^2.2.0",
     "gulp-twig": "^0.7.0",
     "gulp-util": "^3.0.6",
+    "rimraf": "^2.6.1",
     "run-sequence": "^1.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "gulp",
+    "build": "gulp build",
+    "clean": "rimraf ./dist && rimraf ./view"
   },
   "author": "Thongchai Kitiyanantawong",
   "license": "MIT",
