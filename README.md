@@ -1,6 +1,6 @@
 > A simple starterkit boilerplate for static web development. If you have comments or suggestions feel free to give me a shout on [Twitter](http://twitter.com/mypum)
 
-### Features
+## Features
 - Responsive boilerplate
 - Sass support
 - Using Twig for building pages
@@ -8,10 +8,14 @@
 - Live Browser Reloading
 - Cross-device Synchronization
 
+## Requirements
+Make sure all dependencies have been installed before moving on:
+* [Node.js](http://nodejs.org/)
+* [Yarn](https://yarnpkg.com/en/docs/install)
 
-### Installation
+## Install dependencies
 ```bash
-yarn install
+yarn
 ```
 
 ### Development
