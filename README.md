@@ -1,0 +1,1 @@
+> A simple starterkit boilerplate for static web development. If you have comments or suggestions feel free to give me a shout on [Twitter](http://twitter.com/mypum)
