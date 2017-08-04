@@ -103,11 +103,12 @@ gulp.task('html', () => {
             cdata: true,
             quotes: true
         }) : gutil.noop() )
-        .pipe( isProduction ? $.prettify({
+        .pipe($.prettify({
             unformatted: ['pre', 'code'],
             indent_inner_html: true,
-            indent_size: 4
-        }) : gutil.noop())
+            indent_size: 2,
+            brace_style: 'end-expand'
+        }))
 
         .pipe( isProduction ? gulp.dest( paths.twig.build ) : gulp.dest( paths.twig.dest ) );
 });
