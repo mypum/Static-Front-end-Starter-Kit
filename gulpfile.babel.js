@@ -71,7 +71,7 @@ const excludePaths = {
 
 Object.keys(excludePaths).map((key) => {
   excludePaths[key].map((folder) => {
-    get(paths, `${key}.src`, []).push(`!${appPath}${key}/${folder}/*`)
+    get(paths, `${key}.src`, []).push(`!${appPath}${key}/${folder}/**/*`)
   });
 });
 
