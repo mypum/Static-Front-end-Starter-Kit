@@ -6,6 +6,7 @@ import runSequence from 'run-sequence';
 import del from 'del';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import gutil from 'gulp-util'
+import { get } from 'lodash'
 
 const browserSync = bs.create();
 const $ = gulpLoadPlugins();
@@ -28,29 +29,29 @@ const AUTOPREFIXER_BROWSERS = [
 ];
 
 const ftpDomain = '';
-
 const FTP_CONFIG = {
     host: '',
     user: '',
     pass: '',
     remotePath: '' // insert remote path
 };
-
 const appPath = 'app/';
 const viewPath = 'view/';
 const paths = {
-    styles: {
+    scss: {
         src: appPath + 'scss/**/*.scss',
         dest: viewPath + 'cs',
         build: 'dist/cs'
     },
-    scripts: {
+    js: {
         src: appPath + 'js/concat/**/*.js',
         dest: viewPath + 'js',
         build: 'dist/js'
     },
     twig: {
-        src: appPath + 'twig/*.twig',
+        src: [
+            `${appPath}twig/**/*.twig`
+        ],
         dest: viewPath,
         build: 'dist'
     },
@@ -65,6 +66,16 @@ const paths = {
         build: 'dist/fonts'
     },
 }
+
+const excludePaths = {
+    twig: ['partials', 'layouts']
+}
+
+Object.keys(excludePaths).map((key) => {
+    excludePaths[key].map((folder) => {
+        get(paths, `${key}.src`, []).push(`!${appPath}${key}/${folder}/*`)
+    });
+});
 
 const changeEvent = (evt) => {
     const line = '---------------------------------------------------';
@@ -115,7 +126,7 @@ gulp.task('html', () => {
 
 // - CSS
 gulp.task('css', () => {
-    return gulp.src( paths.styles.src )
+    return gulp.src( paths.scss.src )
         .pipe($.sass({
             outputStyle: 'expanded'
         }).on('error', $.sass.logError))
@@ -123,13 +134,13 @@ gulp.task('css', () => {
         .pipe(isProduction ? $.rename({
             suffix: '.min'
         }) : gutil.noop())
-        .pipe( isProduction ? gulp.dest( paths.styles.build ) : gulp.dest( paths.styles.dest ) )
+        .pipe( isProduction ? gulp.dest( paths.scss.build ) : gulp.dest( paths.scss.dest ) )
         .pipe( isProduction ? gutil.noop() : browserSync.stream());
 });
 
 // - JS
 gulp.task('js', () => {
-    return gulp.src( paths.scripts.src )
+    return gulp.src( paths.js.src )
         .pipe($.plumber({
             errorHandler: (err) => {
                 new gutil.PluginError('JS', err, {showStack: true});
@@ -137,12 +148,12 @@ gulp.task('js', () => {
             }
         }))
         .pipe($.concat('main.js'))
-        .pipe(isProduction ? gulp.dest( paths.scripts.build ) : gulp.dest( paths.scripts.dest ) );
+        .pipe(isProduction ? gulp.dest( paths.js.build ) : gulp.dest( paths.js.dest ) );
 });
 
 gulp.task('js:nonConcat', () => {
     return gulp.src( appPath + 'js/*.js' )
-           .pipe(gulp.dest( isProduction ? paths.scripts.build : paths.scripts.dest ));
+           .pipe(gulp.dest( isProduction ? paths.js.build : paths.js.dest ));
 });
 
 // - IMAGES
@@ -174,7 +185,7 @@ gulp.task('cmq', () => {
     return gulp.src('dist/cs/*.css')
         .pipe($.groupCssMediaQueries())
         .pipe($.cleanCss())
-        .pipe(gulp.dest( paths.styles.build ));
+        .pipe(gulp.dest( paths.scss.build ));
 });
 
 gulp.task('default', () => {
@@ -186,7 +197,7 @@ gulp.task('serve',['html','css','js', 'js:nonConcat', 'fonts', 'images', 'browse
         changeEvent(evt);
         runSequence(['html'],'bs-reload');
     });
-    gulp.watch(paths.styles.src, ['css']).on('change', (evt) => {
+    gulp.watch(paths.scss.src, ['css']).on('change', (evt) => {
         changeEvent(evt);
     });
     gulp.watch( appPath + 'js/**/*.js' ).on('change', (evt) => {
