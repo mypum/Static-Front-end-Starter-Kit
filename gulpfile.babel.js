@@ -39,29 +39,27 @@ const appPath = 'app/';
 const viewPath = 'view/';
 const paths = {
     scss: {
-        src: appPath + 'scss/**/*.scss',
+        src: [appPath + 'scss/**/*.scss'],
         dest: viewPath + 'cs',
         build: 'dist/cs'
     },
     js: {
-        src: appPath + 'js/concat/**/*.js',
+        src: [appPath + 'js/concat/**/*.js'],
         dest: viewPath + 'js',
         build: 'dist/js'
     },
     twig: {
-        src: [
-            `${appPath}twig/**/*.twig`
-        ],
+        src: [appPath + 'twig/**/*.twig'],
         dest: viewPath,
         build: 'dist'
     },
     img: {
-        src: appPath + 'img/**/*',
+        src: [appPath + 'img/**/*'],
         dest: viewPath + 'img',
         build: 'dist/img'
     },
     fonts: {
-        src: appPath + 'fonts/**/*',
+        src: [appPath + 'fonts/**/*'],
         dest: viewPath + 'fonts',
         build: 'dist/fonts'
     },
