@@ -34,5 +34,7 @@
   },
   "author": "Thongchai Kitiyanantawong",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
 }
